@@ -1,0 +1,33 @@
+# Gitignore for secondbrain project
+
+# macOS specific files
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+
+# IDEs
+.idea/
+.vscode/
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+
+# Frontend build artifacts
+fe/chat-ui/build/
+
+# Backend virtual environment
+be/.venv/
+agents/.venv/
