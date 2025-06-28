@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { Avatar, Paper } from '@mui/material';
 
@@ -27,17 +27,25 @@ const StyledAvatar = styled(Avatar)`
 `;
 
 function ChatHistory({ messages }) {
+  const messagesEndRef = useRef(null); // Ref for auto-scrolling
+
+  // Effect to scroll to the bottom when messages change
+  useEffect(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
   return (
     <HistoryContainer>
       {messages.map((msg, index) => (
         <MessageWrapper key={index} sender={msg.sender}>
-          {msg.sender === 'bot' && <StyledAvatar>B</StyledAvatar>}
+          {msg.sender === 'llm' && <StyledAvatar>L</StyledAvatar>}
           <MessageContainer sender={msg.sender}>
             {msg.text}
           </MessageContainer>
           {msg.sender === 'user' && <StyledAvatar>U</StyledAvatar>}
         </MessageWrapper>
       ))}
+      <div ref={messagesEndRef} /> {/* Invisible div to scroll to */}
     </HistoryContainer>
   );
 }

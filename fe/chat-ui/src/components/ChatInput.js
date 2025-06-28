@@ -13,12 +13,12 @@ const StyledTextField = styled(TextField)`
   margin-right: 10px;
 `;
 
-function ChatInput({ onSendMessage }) {
+function ChatInput({ sendMessage }) {
   const [input, setInput] = useState('');
 
   const handleSend = () => {
     if (input.trim()) {
-      onSendMessage(input);
+      sendMessage(input); // Call the sendMessage function passed from App.js
       setInput('');
     }
   };
