@@ -25,9 +25,15 @@ class Item(BaseModel):
     price: float
     is_offer: Union[bool, None] = None
 
-@app.get("/") 
+@app.get("/")
 def read_root():
     return {"Hello": "World"}
+
+
+@app.get("/health")
+async def health_check():
+    return {"status": "ok"}
+
 
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: Union[str, None] = None):
