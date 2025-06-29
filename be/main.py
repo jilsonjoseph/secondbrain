@@ -46,6 +46,8 @@ def update_item(item_id: int, item: Item):
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
+    # Log all headers to debug CORS issue
+    print(f"Incoming connection headers: {websocket.scope['headers']}")
     try:
         while True:
             data = await websocket.receive_text()
