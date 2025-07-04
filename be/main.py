@@ -1,10 +1,19 @@
+from dotenv import load_dotenv
+
+load_dotenv()
+
 from typing import Union
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 import asyncio
+import os
+import google.generativeai
 
 app = FastAPI()
+
+# Configure Google Gemini API
+google.generativeai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 # Configure CORS
 origins = [
@@ -53,9 +62,14 @@ async def websocket_endpoint(websocket: WebSocket):
             data = await websocket.receive_text()
             print(f"Received from client: {data}")
 
-            # Simulate LLM processing
-            llm_response = f"LLM says: You sent '{data}'. I'm still learning!"
-            await asyncio.sleep(1)  # Simulate processing time
+            # Actual LLM processing with Google Gemini
+            try:
+                model = google.generativeai.GenerativeModel(os.getenv("GEMINI_MODEL_NAME", "gemini-pro")) # You can choose other models like 'gemini-pro-vision'
+                response = await asyncio.to_thread(model.generate_content, data)
+                llm_response = response.text
+            except Exception as e:
+                llm_response = f"Error communicating with LLM: {e}"
+                print(f"LLM API Error: {e}") # Log the error for debugging
 
             await websocket.send_text(llm_response)
             print(f"Sent to client: {llm_response}")
