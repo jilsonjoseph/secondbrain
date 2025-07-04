@@ -1,3 +1,4 @@
+import ReactMarkdown from 'react-markdown';
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { Avatar, Paper } from '@mui/material';
@@ -14,6 +15,10 @@ const MessageContainer = styled(Paper)`
   max-width: 60%;
   align-self: ${props => props.sender === 'user' ? 'flex-end' : 'flex-start'};
   background-color: ${props => props.sender === 'user' ? '#dcf8c6' : '#fff'};
+
+  p {
+    margin: 0;
+  }
 `;
 
 const MessageWrapper = styled.div`
@@ -40,7 +45,7 @@ function ChatHistory({ messages }) {
         <MessageWrapper key={index} sender={msg.sender}>
           {msg.sender === 'llm' && <StyledAvatar>L</StyledAvatar>}
           <MessageContainer sender={msg.sender}>
-            {msg.text}
+            <ReactMarkdown>{msg.text}</ReactMarkdown>
           </MessageContainer>
           {msg.sender === 'user' && <StyledAvatar>U</StyledAvatar>}
         </MessageWrapper>
